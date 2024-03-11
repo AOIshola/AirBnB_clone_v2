@@ -15,7 +15,7 @@ def do_deploy(archive_path):
     if not os.path.isfile(archive_path):
         return False
     try:
-        put(archive_path, "/tmp/")
+        put(archive_path, f"/tmp/{os.path.basename(archive_path)}")
         arch_name = archive_path.split('/')[1].split('.')[0]
         arch_file = f"{arch_name}.tgz"
         run(f"mkdir -p /data/web_static/releases/{arch_name}")
