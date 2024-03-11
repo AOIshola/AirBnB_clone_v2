@@ -6,7 +6,7 @@ from fabric.api import *
 from datetime import datetime
 import os.path
 
-env.hosts = ["18.204.9.242", "18.204.20.168"]
+env.hosts = ["18.204.20.168", "18.204.9.242"]
 env.user = "ubuntu"
 
 
@@ -21,12 +21,15 @@ def do_deploy(archive_path):
         run(f"mkdir -p /data/web_static/releases/{arch_name}")
 
         # creates /data/web_static/releases/{arch_name}/web_static folder
-        run(f"tar -xzf /tmp/{arch_file} -C /data/web_static/releases/{arch_name}")
+        run(f"tar -xzf /tmp/{arch_file} -C \
+                /data/web_static/releases/{arch_name}")
         run(f"rm /tmp/{arch_file}")
-        run(f"mv /data/web_static/releases/{arch_name}/web_static/* /data/web_static/releases/{arch_name}")
+        run(f"mv /data/web_static/releases/{arch_name}/web_static/* \
+                /data/web_static/releases/{arch_name}/")
         run(f"rm -rf /data/web_static/releases/{arch_name}/web_static")
-        run("sudo rm /data/web_static/current")
-        run(f"ln -s /data/web_static/releases/{arch_name} /data/web_static/current")
+        run("sudo rm -rf /data/web_static/current")
+        run(f"ln -s /data/web_static/releases/{arch_name} \
+                /data/web_static/current")
         return True
     except Exception as e:
         return False
